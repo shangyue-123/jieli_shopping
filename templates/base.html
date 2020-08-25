@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock%}</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <script src="{% static 'jquery/jquery-3.5.1.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'bootstrapt/css/bootstrap.min.css' %}">
+    <script src="{% static 'bootstrapt/js/bootstrap.bundle.min.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
+    {% block head %}{% endblock %}
+</head>
+<body>
+<!--公用头部模板-->
+<div id="head" class="jumbotron bg-light">
+
+    {% block body_title %}
+    <!--标题-->
+    <p class="h4 text-center">杰力商城</p>
+    {% endblock%}
+
+    <!--搜索框-->
+    <div class="input-group container justify-content-center">
+        <input type="text" class="form-control col-md-4" placeholder="请输入商品名称">
+        <img class="input-group-text" src="{% static 'img/icons/search.svg' %}">
+    </div>
+
+</div>
+
+{% block central%}{% endblock %}
+
+
+<!--公用底部模板-->
+<!--<div class="container">-->
+    <nav id="bottom" class="navbar col-12 fixed-bottom shadow-sm bg-light rounded text-center" >
+        <a class="navbar-brand navbar col-2" href="*" style="margin-left: 3.5%">
+            <img src="{% static 'img/icons/house-door.svg' %}" class="card-img-top" >
+            <p class="card-text text-dark h6" >主页</p>
+        </a>
+
+        <a class="navbar-brand col-2" href="*" >
+            <img src="{% static 'img/icons/search.svg' %}" class="card-img-top">
+            <p class="card-text text-dark h6" >搜索</p>
+        </a>
+
+        <a class="navbar-brand col-2" href="*" >
+            <img src="{% static 'img/icons/cart2.svg' %}" class="card-img-top">
+            <p class="card-text text-dark h6  cen" >购物车</p>
+        </a>
+
+        <a class="navbar-brand col-2" href="*">
+            <img src="{% static 'img/icons/person.svg' %}" class="card-img-top" >
+            <p class="card-text text-dark h6" >我的</p>
+        </a>
+
+    </nav>
+<!--</div>-->
+
+</body>
+</html>

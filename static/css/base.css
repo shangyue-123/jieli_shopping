@@ -1,0 +1,26 @@
+/*头部样式*/
+#head {
+    padding-top: 2%;
+    padding-bottom: 3%;
+    margin-bottom: -1%;
+}
+
+/*底部样式*/
+/*底部导航栏*/
+#bottom {
+    padding: 0% 0%;
+}
+
+/*底部图标*/
+.navbar-brand {
+    padding: 0% 3%;
+    opacity: 0.6;
+
+
+}
+
+/*底部图片大小*/
+.card-img-top{
+    width: 25px;
+    height: 25px;
+}

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注册</title>
+
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <script src="{% static 'jquery/jquery-3.5.1.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'bootstrapt/css/bootstrap.min.css' %}">
+    <script src="{% static 'bootstrapt/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/register.js' %}"></script>
+</head>
+<body>
+    <!--头部导航栏-->
+
+    <!--标题-->
+    <h2 class="text-center" >注册</h2>
+
+    <!--注册表单-->
+    <form class="form-group  container" method="post">
+        {% csrf_token %}
+
+        <span class="form-check text-danger" id="user_name_check_span"></span>
+        <!--输入用户名-->
+        <div class="input-group justify-content-center"  style="margin-top:1%" >
+            <div class="input-group-prepend col-md-4 mb-4">
+                <img class="input-group-text" src="{% static 'img/icons/name_img.svg' %}">
+                <input type="text" class="form-control " id="user_name" name="user_name" placeholder="请输入用户名" >
+            </div>
+        </div>
+
+        <span class="form-check text-danger" id="user_password_check_span"></span>
+        <!--输入密码-->
+        <div class="input-group justify-content-center" >
+            <div class="input-group-prepend col-md-4 mb-4">
+                <img class="input-group-text" src="{% static 'img/icons/password_img.svg' %}">
+                <input type="password" class="form-control" id="user_password" name="user_password" placeholder="请输入密码">
+                <img  class="img-fluid" id="user_password_check_img">
+            </div>
+        </div>
+
+        <span class="form-check text-danger" id="user_password_check2_span"></span>
+        <!--密码确认-->
+        <div class="input-group justify-content-center">
+            <div class="input-group-prepend col-md-4 mb-4">
+                <img class="input-group-text" src="{% static 'img/icons/password_img.svg' %}">
+                <input type="password" class="form-control" id="user_password_check"  placeholder="请再次输入密码">
+                <img  class="img-fluid" id="user_password_twoCheck_img">
+            </div>
+        </div>
+
+        <span class="form-check text-danger" id="user_gender_check_span"></span>
+        <!--选择性别-->
+        <div class="input-group justify-content-center" >
+            <div class="input-group-prepend col-md-4 mb-4">
+                <img class="input-group-text" src="{% static 'img/icons/person-square.svg' %}">
+                <select class="custom-select custom-select" name="user_gender">
+                    <option selected>请选择性别</option>
+                    <option value="0">男</option>
+                    <option value="1">女</option>
+                </select>
+            </div>
+        </div>
+
+ 
+        <span class="form-check text-danger" id="user_email_check_span"></span>
+         <!--输入邮箱-->
+        <div class="input-group justify-content-center" >
+            <div class="input-group-prepend col-md-4 mb-4">
+                <img class="input-group-text" src="{% static 'img/icons/envelope.svg' %}">
+                <input type="email" class="form-control" id="user_email" name="user_email" placeholder="请输入邮箱">
+            </div>
+        </div>
+
+        <span class="form-check text-danger" id="user_number_check_span"></span>
+            <!--输入手机号-->
+        <div class="input-group justify-content-center">
+            <div class="input-group-prepend col-md-4 mb-4">
+                <img class="input-group-text" src="{% static 'img/icons/phoneNumber_img.svg' %}">
+                <input type="text" class="form-control" id="user_number" name="user_number" placeholder="请输入韩国手机号">
+            </div>
+        </div>
+
+            <!--提交按钮-->
+        <div class="input-group justify-content-center">
+            <button type="submit" class="btn btn-primary col-md-4  mb-2" id="submit" name="btn_submit" >注册并登录</button>
+
+        </div>
+
+
+
+    </form>
+</body>
+</html>
