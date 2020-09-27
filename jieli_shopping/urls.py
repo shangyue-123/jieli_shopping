@@ -24,10 +24,15 @@ urlpatterns = [
     path('',include('user.urls')),
     path('index/',include('user.urls')),
     path('user/',include('user.urls')),
-    #
-    # #进入商品路由
+    #进入商品路由
     path('goods/',include('goods.urls')),
-    #
-    # #进入购物车路由
-    # path('cart/',include('cart.urls')),
+
+    #进入购物车路由
+    path('cart/',include('cart.urls')),
+
+    #进入支付路由
+    path('pay/',include('pay.urls')),
+
+    path('order/',include('order.urls')),
+
 ]

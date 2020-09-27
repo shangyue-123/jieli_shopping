@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'goods',
     'pay',
     'user',
+    'order',
 ]
 
 MIDDLEWARE = [
@@ -66,6 +67,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
+
             ],
         },
     },
@@ -129,16 +132,18 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR,'static'),
+    os.path.join(BASE_DIR,'static/media'),
+
 ]
 
 JS_PATH = os.path.join(BASE_DIR,'static/js').replace('\\','/')
 JS_URL='/js/'
 
-CSS_PATH = os.path.join(BASE_DIR,'static/js').replace('\\','/')
+CSS_PATH = os.path.join(BASE_DIR,'static/css').replace('\\','/')
 CSS_URL='/css/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR,'static/images').replace('\\','/')
-MEDIA_URL='/img/'
+MEDIA_ROOT = os.path.join(BASE_DIR,'static/media').replace('\\','/')
+MEDIA_URL='/media/'
 
 JQ_PATH = os.path.join(BASE_DIR, 'static/jquery').replace('\\', '/')
 JQ_URL = '/jquery/'
@@ -146,5 +151,5 @@ JQ_URL = '/jquery/'
 BOOTSTRAP_PATH = os.path.join(BASE_DIR,'static/bootstrap').replace('\\','/')
 BOOTSTRAP_URL = '/bootstrapt/'
 
-LOGIN_URL = '/user/login.html/'
+LOGIN_URL = '/user/login/'
 

@@ -1,8 +1,12 @@
 from django.db import models
 
+# from  cart.models import cart
 
 # Create your models here.
 # 定义用户信息表
+from goods.models import goods
+
+
 class user(models.Model):
     GENDER_ITEM = [
         (0, '男'),
@@ -24,10 +28,18 @@ class user(models.Model):
     user_state = models.IntegerField(choices=STATE_ITEM, verbose_name='用户状态',default=1)
 
 
-# 定义收获信息表
+# 定义收货信息表
 class consignee(models.Model):
-    user_id = models.ForeignKey('user', verbose_name='用户信息表', on_delete=models.CASCADE)
+    user = models.ForeignKey(user, verbose_name='用户信息表', on_delete=models.CASCADE)
     consignee_name = models.CharField(max_length=20, verbose_name='收件人姓名')
     consignee_number = models.CharField(max_length=11, verbose_name='收件人手机号')
     consignee_address = models.CharField(max_length=100, verbose_name='收货地址')
     consignee_default = models.BooleanField(default=0)
+
+
+
+
+# class
+
+
+

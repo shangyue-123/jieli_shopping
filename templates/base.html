@@ -13,48 +13,90 @@
 </head>
 <body>
 <!--公用头部模板-->
-<div id="head" class="jumbotron bg-light">
+<!--{% block body_head %}-->
+<!--<div id="head" class="jumbotron bg-light ">-->
+<!--    {% csrf_token %}-->
+<!--{% endblock%}-->
+
 
     {% block body_title %}
     <!--标题-->
     <p class="h4 text-center">杰力商城</p>
     {% endblock%}
 
+    {% block search%}
     <!--搜索框-->
-    <div class="input-group container justify-content-center">
-        <input type="text" class="form-control col-md-4" placeholder="请输入商品名称">
-        <img class="input-group-text" src="{% static 'img/icons/search.svg' %}">
-    </div>
+    <div class="input-group container justify-content-center"  >
+        <input type="text" id="search_input" class="form-control col-md-4" placeholder="请输入商品名称" autocomplete="off">
+        <img class="input-group-text" id="search_img" src="{% static 'img/icons/search.svg' %}">
 
-</div>
+    </div>
+    <div class="list-group container justify-content-center ml-3  " id="search_list" style="width: 85%;position: absolute">
+    </div>
+    {% endblock %}
+<!--</div>-->
+
 
 {% block central%}{% endblock %}
 
 
 <!--公用底部模板-->
 <!--<div class="container">-->
+{% block botton %}
     <nav id="bottom" class="navbar col-12 fixed-bottom shadow-sm bg-light rounded text-center" >
-        <a class="navbar-brand navbar col-2" href="*" style="margin-left: 3.5%">
+        <a class="navbar-brand navbar col-2" href="/index/" style="margin-left: 3.5%">
             <img src="{% static 'img/icons/house-door.svg' %}" class="card-img-top" >
             <p class="card-text text-dark h6" >主页</p>
         </a>
 
-        <a class="navbar-brand col-2" href="*" >
+        <a class="navbar-brand col-2" href="/goods/product_list/" >
             <img src="{% static 'img/icons/search.svg' %}" class="card-img-top">
-            <p class="card-text text-dark h6" >搜索</p>
+            <p class="card-text text-dark h6" >商品</p>
         </a>
 
-        <a class="navbar-brand col-2" href="*" >
+        <a class="navbar-brand col-2 " href="/cart/cart_list/" >
             <img src="{% static 'img/icons/cart2.svg' %}" class="card-img-top">
-            <p class="card-text text-dark h6  cen" >购物车</p>
+            <span class="badge badge-pill badge-danger " id="cart_badge"></span>
+            <p class="card-text text-dark h6 " >购物车</p>
         </a>
 
-        <a class="navbar-brand col-2" href="*">
+        <a class="navbar-brand col-2" href="/user/personal_information/">
             <img src="{% static 'img/icons/person.svg' %}" class="card-img-top" >
             <p class="card-text text-dark h6" >我的</p>
         </a>
 
     </nav>
+{% endblock %}
+<!--JS动态表示-->
+<script>
+    // 见面刷新显示购物车商品数量
+    $(function () {
+        // 异步显示购物车徽章数量
+        $.ajax({
+            url:"/cart/cart_number/",
+            data:{
+                "csrfmiddlewaretoken": $("[name = 'csrfmiddlewaretoken']").val()
+            },
+            type:"POST",
+            async:true,
+            success:function (cart_goods_quantity_sum_dic) {
+                cart_goods_quantity_sum= JSON.parse(cart_goods_quantity_sum_dic).cart_goods_quantity__sum
+                $("#cart_badge").html(cart_goods_quantity_sum);
+            }
+        })
+        // 徽章超过99显示99+，=0隐藏
+        $("#cart_badge").bind('DOMNodeInserted',function () {
+            if ($("#cart_badge").text() > 99){
+                $("#cart_badge").text("99+");
+            }else if ($("#cart_badge").text() == 0){
+                $("#cart_badge").css('visibility','hidden');
+            }
+
+        })
+    })
+
+</script>
+
 <!--</div>-->
 
 </body>

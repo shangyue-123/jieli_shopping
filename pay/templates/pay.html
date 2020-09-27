@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>付款</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <script src="{% static 'jquery/jquery-3.5.1.min.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'bootstrapt/css/bootstrap.min.css' %}">
+    <script src="{% static 'bootstrapt/js/bootstrap.bundle.min.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/pay.css' %}">
+    {% block head %}{% endblock %}
+</head>
+<body>
+
+<!--显示收件人信息-->
+<div class="jumbotron d-flex  container bg-light pb-0 pt-1 mt-2 mb-2">
+    <div class=" ml-0 col-10">
+        {% for consignee in consignee_dic %}
+        <div class=" font-weight-bold ">地址：{{consignee.consignee_address}}</div>
+        <input id="get_consignee_id" value="{{consignee.id}}" style="display: none">
+        <div class="small font-weight-bold">收件人：{{consignee.consignee_name}}<br>联系电话：{{consignee.consignee_number}}</div>
+        {% endfor %}
+    </div>
+    <img class="float-right align-self-center col-2" src="../../static/img/icons/chevron-right.svg" >
+
+
+
+</div>
+
+<!--显示商品信息-->
+<div class="jumbotron d-flex flex-column-reverse container bg-light mb-2 ">
+    {% for search in goods_message_list %}
+    <div class=" media  pt-2 container pay_list border-bottom " id="{{search.goods_id}}">
+            <img class="mr-0" src=" {{search.goods_image}}" id="goods_image_{{search.goods_id}}" style="width: 90px;height: 90px;">
+            <div class="media-body"  id="list_item_{{search.goods_category}}" style="border-radius: 5px">
+                <h5 class=" mt-1 mb-0 search_name" id="goods_name_{{search.goods_id}}">{{search.goods_name}}</h5>
+                <button style="visibility:hidden" >选择</button>
+                <div class="mb-0 h5 text-danger mt-4">
+                    <h5 class="float-left ">￥<h5 class="float-left" id="goods_sell_price_{{search.goods_id}}" >{{search.goods_sell_price}}</h5></h5>
+                    <div class="float-right mr-2 mb-0 ">
+                        <img  class="float-right ml-2 mt-1 cart_add"  src="../../static/img/icons/plus.svg" width="24" height="24">
+                        <h5 class="float-right mt-1 text-black-50 ml-2 text-center" id="cart_goods_quantity_{{search.goods_id}}" style="width: 25px;height: 25px">{{search.cart_goods_quantity}}</h5>
+                        <img  class="float-right ml-2 mt-1 cart_dash"  src="../../static/img/icons/dash.svg" width="24" height="24">
+                    </div>
+                </div>
+            </div>
+    </div>
+    {%endfor%}
+</div>
+
+<!--显示支付方式-->
+<div class="jumbotron  container bg-light pb-0 pt-1 " style="margin-bottom: 18%">
+    <div class="list-group   form-group row h6 ">
+        <div class="form-check pt-2 pb-2 border-bottom">
+            <input type="radio" class="form-check-input" name="select" id="select_pay0" value="0" checked>
+            <label class="form-check-label" for="select_pay0">现金支付</label>
+        </div>
+        <div class="form-check disabled  pt-2 pb-2 border-bottom">
+            <input type="radio" class="form-check-input" name="select" id="select_pay1" value="1" disabled>
+            <label class="form-check-label" for="select_pay1">微信支付
+                <p class="text-warning mb-0">暂未开通</p>
+            </label>
+        </div>
+        <div class="form-check disabled  pt-2 pb-2 border-bottom">
+            <input type="radio" class="form-check-input " name="select" id="select_pay2" value="2" disabled>
+            <label class="form-check-label" for="select_pay2">支付宝支付
+                <p class="text-warning mb-0">暂未开通</p>
+            </label>
+        </div>
+    </div>
+
+</div>
+
+<!--提交订单-->
+<nav id="bottom" class="navbar col-12 fixed-bottom shadow-sm bg-light rounded text-center border border-primary" >
+    <div class="h6 form-check form-check-inline col-6 mb-0" >
+        <label class="form-check-label h4 font-weight-bold text-danger" id="sum_price"></label>
+    </div>
+    <button type="button" class="col-5 btn btn-danger" id="order_submit">提交订单</button>
+    <form style="display: none" id="submit">
+        {% csrf_token %}
+    </form>
+</nav>
+
+<script>
+
+    $(function () {
+        // 页面加载计算总价
+        sum_price()
+        // 点击加号增加数量，计算总价
+        $('.cart_add').click(function () {
+            var cart_goods_quantity = Number($(this).next().text())
+            console.log(cart_goods_quantity)
+            $(this).next().text(cart_goods_quantity+1)
+            sum_price()
+        })
+        //点击减号减少数量，计算总价,数量为0时，删除元素
+        $('.cart_dash').click(function () {
+            var cart_goods_quantity = Number($(this).prev().text())
+            console.log(cart_goods_quantity)
+            if (cart_goods_quantity == 1){
+                $(this).parents('.pay_list').remove()
+            }else {
+                $(this).prev().text(cart_goods_quantity-1)
+            }
+            sum_price()
+
+
+        })
+        //点击提交订单
+        $("#order_submit").click(function () {
+            var goods_json_get = {};
+            var i = 0;
+            //向goods_id_list中添加商品id
+            $(".pay_list").each(function () {
+                goods_json_get[i] = {};
+
+                var goods_id = $(this).attr("id");
+                var goods_image = $("#goods_image_"+goods_id).attr("src")
+                var goods_name = $("#goods_name_"+goods_id).text()
+                var goods_sell_price = $("#goods_sell_price_"+goods_id).text()
+                var cart_goods_quantity = $("#cart_goods_quantity_"+goods_id).text()
+
+                goods_json_get[i]['goods_id'] = goods_id;
+                goods_json_get[i]['goods_image'] = goods_image;
+                goods_json_get[i]['goods_name'] = goods_name;
+                goods_json_get[i]['goods_sell_price'] = goods_sell_price;
+                goods_json_get[i]['cart_goods_quantity'] = cart_goods_quantity;
+
+                i+=1
+            });
+
+            var goods_json = JSON.stringify(goods_json_get)
+            console.log(goods_json)
+            var payment_method_get = $("input[type='radio']:checked").val();
+            var payment_amount_get = $("#sum_price").text()
+            var consignee_id_get = $("#get_consignee_id").val()
+            var url = "http://" + window.location.host + "/pay/submit_order/"
+
+            var form = $("#submit");
+            form.attr('action',url);
+            form.attr('method','post');
+
+            var goods_json_input = $('<input type="text" name="goods_json">')
+            var payment_method = $('<input type="text" name="payment_method">')
+            var payment_amount = $('<input type="text" name="payment_amount">')
+            var consignee_id = $('<input type="text" name="consignee_id">')
+
+            goods_json_input.attr('value',goods_json)
+            payment_method.attr('value',payment_method_get)
+            payment_amount.attr('value',payment_amount_get)
+            consignee_id.attr('value',consignee_id_get)
+
+            form.append(goods_json_input)
+            form.append(payment_method)
+            form.append(payment_amount)
+            form.append(consignee_id)
+            $(document.body).append(form);
+            form.submit();
+        })
+
+
+
+        // 计算总价
+        function sum_price() {
+            var sum_price = 0;
+            $(".pay_list").each(function () {
+                var goods_id = $(this).attr('id')
+                var goods_sell_price = $("#goods_sell_price_" + goods_id).text()
+                var cart_goods_quantity = $("#cart_goods_quantity_" + goods_id).text()
+                console.log(goods_id, goods_sell_price, cart_goods_quantity)
+                sum_price += goods_sell_price * cart_goods_quantity
+
+            });
+            console.log(sum_price)
+            $('#sum_price').text('￥' + sum_price)
+        }
+    });
+
+
+</script>
+
+
+</body>
+</html>

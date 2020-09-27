@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+我的信息
+{% endblock%}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/personal_information.css' %}">
+<script src="{% static 'js/personal_information.js' %}"></script>
+{% endblock %}
+
+<!--过滤头部标题-->
+{% block body_title%}{% endblock %}
+{% block search%}{% endblock %}
+
+{% block central%}
+{% csrf_token %}
+<!--头部导航栏-->
+<nav class="navbar navbar-light bg-light border-bottom ">
+    <img src="../../static/img/icons/chevron-left.svg" class="float-left" id="previous_page">
+    <div class="h6 float-right " id="user_name">{{request.session.user_name}}的个人信息</div>
+    <input id="is_login" value="{{request.session.is_login}}" style="display: none">
+    <a class="float-right text-warning " id="register" style="display: none">注册</a>
+    <a class="float-right text-warning pr-3" id="login" style="display: none">登录</a>
+    <a class="float-right text-warning pr-3 " id="logout" style="display: none">注销</a>
+</nav>
+
+<!--商品状态展示-->
+<div class="bg-light row pt-3 pb-3" >
+    <a class="card bg-light border-0 col-3" id="order_unpaid">
+        <img src="../../static/img/icons/cash.svg" class="card-img-top align-self-center">
+        <p class="card-text h6 text-center pt-2" >待支付
+            <span class="badge badge-danger badge-pill">{{order_unpaid_count}}</span>
+        </p>
+
+
+    </a>
+    <a class="card bg-light border-0 col-3" id="order_await">
+        <img src="../../static/img/icons/gift.svg" class="card-img-top align-self-center">
+        <p class="card-text h6 text-center pt-2" >待发货
+            <span class="badge badge-danger badge-pill">{{order_await_count}}</span>
+        </p>
+    </a>
+    <a class="card bg-light border-0 col-3" id="order_receiving">
+        <img src="../../static/img/icons/truck.svg" class="card-img-top align-self-center">
+        <p class="card-text h6 text-center pt-2" >待收货
+            <span class="badge badge-danger badge-pill">{{order_receiving_count}}</span>
+        </p>
+    </a>
+    <a class="card bg-light border-0 col-3 " id="order">
+        <img src="../../static/img/icons/card-checklist.svg" class="card-img-top  align-self-center " >
+        <p class="card-text small text-center pt-2" >我的订单
+            <span class="badge badge-danger badge-pill">{{order_count}}</span>
+        </p>
+    </a>
+
+
+
+</div>
+
+<!--显示收件人信息-->
+
+<P class="h5 mt-5">地址管理：</P>
+<div class="jumbotron d-flex bg-light h6 row">
+    <div class=" ml-0 col-10">
+        {% for consignee in consignee_dic %}
+        <div >地址：{{consignee.consignee_address}}</div>
+        <div class="small  mt-3">收件人：{{consignee.consignee_name}}<br>联系电话：{{consignee.consignee_number}}</div>
+        {% endfor %}
+    </div>
+    <img class="float-right align-self-center col-2" src="../../static/img/icons/chevron-right.svg" id="address_change" style="width: 20px;height: 20px">
+</div>
+
+
+<script>
+    $(function () {
+        $("#address_change").click(function () {
+        window.location.href="/address/"
+    });
+        $("#register").click(function () {
+            window.location.href="http://" + window.location.host + "/user/register/"
+        });
+        $("#login").click(function () {
+            window.location.href="http://" + window.location.host + "/user/login/"
+        });
+        $("#logout").click(function () {
+            window.location.href="http://" + window.location.host + "/user/logout/"
+        });
+        $("#order").click(function () {
+            window.location.href="http://" + window.location.host + "/order/"
+        })
+        $("#order_unpaid").click(function () {
+            window.location.href="http://" + window.location.host + "/order/order_unpaid"
+        })
+         $("#order_await").click(function () {
+            window.location.href="http://" + window.location.host + "/order/order_await"
+        })
+        $("#order_receiving").click(function () {
+            window.location.href="http://" + window.location.host + "/order/order_receiving"
+        })
+        var is_login = $("#is_login").val()
+        console.log(is_login)
+        if (is_login=='True'){
+            $("#login").css('display',"none");
+            $("#register").css('display',"none");
+            $("#logout").css('display',"inline");
+        }else{
+            $("#login").css('display',"inline");
+            $("#register").css('display',"inline");
+            $("#logout").css('display',"none");
+        };
+
+        $("#previous_page").click(function () {
+            window.history.back(-1);
+
+        })
+
+
+
+
+
+    });
+
+</script>
+
+{% endblock %}
+
