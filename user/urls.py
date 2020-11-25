@@ -11,6 +11,9 @@ urlpatterns = [
     path('address/',views.address,name='address'),
     path('address/address_change/',views.address_change,name='address_change'),
     path('logout/',views.logout,name='logout'),
+    path('retrieve/',views.retrieve,name='retrieve'),
+    path('email_verification/',views.email_verification,name='email_verification'),
+    path('password_change/',views.password_change,name='password_change')
 
 
 

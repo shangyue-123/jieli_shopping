@@ -42,6 +42,10 @@ INSTALLED_APPS = [
     'pay',
     'user',
     'order',
+    'order_manage',
+    'discounts',
+    'django_crontab'
+
 ]
 
 MIDDLEWARE = [
@@ -87,10 +91,15 @@ DATABASES = {
         'HOST':'127.0.0.1',
         'PORT':'3306',
         'USER':'shangyue',
-        'PASSWORD':'104123',
+        'PASSWORD':'0304123',
+    },
+    # 'redis':{
+    #     'BACKEND':'django_redis.cache.RedisCache',
+    #     'LOCATION':'redis://127.0.0.1:6379/1',
+    #     'OPTIONS':{
+    #         'CLIENT_CLASS':'django_redis.client.DefaultClient'
+    #     }
     }
-}
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -128,6 +137,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
+
+
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
@@ -136,14 +147,18 @@ STATICFILES_DIRS = [
 
 ]
 
+# STATIC_ROOT = os.path.join(BASE_DIR,'static').replace('\\','/')
+
+MEDIA_ROOT = os.path.join(BASE_DIR,'static/media').replace('\\','/')
+MEDIA_URL='/media/'
+
 JS_PATH = os.path.join(BASE_DIR,'static/js').replace('\\','/')
 JS_URL='/js/'
 
 CSS_PATH = os.path.join(BASE_DIR,'static/css').replace('\\','/')
 CSS_URL='/css/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR,'static/media').replace('\\','/')
-MEDIA_URL='/media/'
+
 
 JQ_PATH = os.path.join(BASE_DIR, 'static/jquery').replace('\\', '/')
 JQ_URL = '/jquery/'
@@ -152,4 +167,19 @@ BOOTSTRAP_PATH = os.path.join(BASE_DIR,'static/bootstrap').replace('\\','/')
 BOOTSTRAP_URL = '/bootstrapt/'
 
 LOGIN_URL = '/user/login/'
+
+CRONJOBS = [
+    ('00 23 * * *','discounts.views.goods_preferential_price_update')
+]
+
+# 邮箱验证设置
+EMAIL_USE_SSL = True
+EMAIL_HOST = 'smtp.163.com'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'jieli_shopping@163.com'
+EMAIL_HOST_PASSWORD = 'WVBKRKRDPHWWIUWU'
+# EMAIL_USE_TLS = True
+EMAIL_FROM = EMAIL_HOST_USER
+
+
 

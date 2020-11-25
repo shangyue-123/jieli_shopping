@@ -7,7 +7,7 @@ urlpatterns = [
     path('cart_change/',views.cart_change,name='cart_change'),
     path('cart_number/',views.cart_number,name='cart_number'),
     # path('cart_search/<search_input>/',views.cart_search,name='cart_search'),
-    path('cart_search/',views.cart_search,name='cart_search'),
+    # path('cart_search/',views.cart_search,name='cart_search'),
     # path('cart_search_input_skip/',views.cart_search_input_skip,name='cart_search_skip'),
 
 

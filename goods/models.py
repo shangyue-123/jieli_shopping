@@ -1,14 +1,22 @@
 from django.db import models
 
 # Create your models here.
+# 商品信息模块
 class goods(models.Model):
     CATEGORY_ITEM = [
-        (0,'休闲零食'),
-        (1,'火锅速食'),
-        (2,'厨房调料'),
+        (0,'食品'),
+        (1,'饮料'),
+        (2,'调料'),
         (3,'生活用品'),
-        (4,'厨房用品'),
-        (5,'卫浴用品'),
+        (4,'化妆品'),
+        (5,'手机卡'),
+        (6,'外卖'),
+    ]
+    GOODS_PREFERENTIAL = [
+        (0,'无优惠'),
+        (1, '特价优惠'),
+        (2, '会员优惠'),
+        (3, '优惠券优惠'),
     ]
 
     goods_name = models.CharField(max_length=32,verbose_name='商品名称',unique=True)
@@ -16,10 +24,12 @@ class goods(models.Model):
     goods_image = models.ImageField(upload_to='goods/',verbose_name='商品图片')
     goods_introduction = models.CharField(max_length=64,verbose_name='商品介绍')
     goods_evaluation = models.CharField(max_length=128,verbose_name='商品评价')
-    goods_sell_price = models.FloatField(verbose_name='商品售价')
+    goods_sell_price = models.DecimalField(max_digits=9,decimal_places=2,verbose_name='商品售价')
     goods_sell_volume = models.IntegerField(verbose_name='商品销量')
+    goods_preferential = models.IntegerField(choices=GOODS_PREFERENTIAL,verbose_name='优惠方式',default=0)
+    goods_preferential_price = models.DecimalField(max_digits=9,decimal_places=2,verbose_name='优惠价格',default=999)
 
-
+# 商品库存模块
 class goods_background(models.Model):
 
     STATE_ITEM=[
@@ -37,7 +47,7 @@ class goods_background(models.Model):
     goods_exchange=models.IntegerField(verbose_name='商品换货量')
     goods_ereason = models.CharField(max_length=128,verbose_name='商品退换货理由')
 
-
+# 商品采购模块
 class goods_purchase(models.Model):
     goods_id = models.ForeignKey(goods,on_delete=models.CASCADE,verbose_name='商品展示外键关联')
     goods_background_id = models.ForeignKey(goods_background,on_delete=models.CASCADE,verbose_name='商品后台展示外键关联')

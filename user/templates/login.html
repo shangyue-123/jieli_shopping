@@ -16,9 +16,12 @@
 <body>
     <script>{{ script }}('{{wrong}}')</script>
     <!--头部标题-->
-    <h2 class="text-center" >登录</h2>
+    <div class=" bg-light border-bottom pt-2 pb-2 ">
+        <img src="{% static 'img/icons/chevron-left.svg' %}" class="float-left ml-2 " id="previous_page" style="margin-top: 2px">
+        <div class="h6 text-center mb-0 mt-0" >登录</div>
+    </div>
     <!--登录表单-->
-    <form class="form-group  container" method="post">
+    <form class="form-group container mt-4" method="post">
         {% csrf_token %}
 
         <span class="form-check text-danger" id="user_name_check_span"></span>
@@ -39,25 +42,12 @@
                 <img  class="img-fluid" id="user_password_check_img">
             </div>
         </div>
-
-            <!--提交按钮-->
+        <!--提交按钮-->
         <div class="input-group ">
             <button type="submit" class="btn btn-primary col-12  mb-2" id="submit" name="btn_submit"  >登录</button>
-            <button type="button" class="btn btn-primary  col-12 mb-2" id="register"   >注册</button>
+            <button type="button" class="btn btn-primary  col-5 mb-2 " id="register">注册</button>
+            <button type="button" class="btn btn-primary  col-5 mb-2 offset-2" id="retrieve">找回账号密码</button>
         </div>
-
-
     </form>
-<script>
-    $(function () {
-        $("#register").click(function () {
-             window.location.href="http://" + window.location.host + "/user/register/"
-
-        })
-
-
-    })
-</script>
-
 </body>
 </html>

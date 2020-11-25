@@ -6,6 +6,7 @@
 
 
 {% block head%}
+<script src="{% static 'js/index.js' %}"></script>
 <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}" >
 {% endblock%}
 
@@ -43,84 +44,72 @@
 </div>
 
 <!--商品分类-->
-<div class="text-center">
-    <a class="navbar-brand goods_category" href="*">
-        <img src="{% static 'img/icons/house-door.svg' %}" class="card-img-top">
-        <p class="card-text text-dark h6">输入四个</p>
+<div class="text-center mt-2 ">
+    <a class="navbar-brand goods_category col-3" href="http://{{request.get_host}}/goods/product_list/?goods_category=0" id="0">
+        <img src="{% static 'img/icons/食品.svg' %}" class="card-img-top" style="height: 45px;width: 45px">
+        <p class="card-text text-dark h6">食品</p>
     </a>
 
-    <a class="navbar-brand goods_category" href="*">
-        <img src="{% static 'img/icons/search.svg' %}" class="card-img-top">
-        <p class="card-text text-dark h6">输入四个</p>
+    <a class="navbar-brand goods_category col-3" href="http://{{request.get_host}}/goods/product_list/?goods_category=1" id="1">
+        <img src="{% static 'img/icons/饮料.svg' %}" class="card-img-top" style="height: 45px;width: 45px">
+        <p class="card-text text-dark h6">饮料</p>
     </a>
 
-    <a class="navbar-brand goods_category" href="*">
-        <img src="{% static 'img/icons/cart2.svg' %}" class="card-img-top">
-        <p class="card-text text-dark h6">输入四个</p>
+    <a class="navbar-brand goods_category col-3" href="http://{{request.get_host}}/goods/product_list/?goods_category=2" id="2">
+        <img src="{% static 'img/icons/调料.svg' %}" class="card-img-top" style="height: 45px;width: 45px">
+        <p class="card-text text-dark h6">调料</p>
     </a>
+
 </div>
 <div class="text-center">
-    <a class="navbar-brand goods_category" href="*">
-        <img src="{% static 'img/icons/person.svg' %}" class="card-img-top">
-        <p class="card-text text-dark h6">输入四个</p>
+    <a class="navbar-brand goods_category col-3" href="http://{{request.get_host}}/goods/product_list/?goods_category=3" id="3">
+        <img src="{% static 'img/icons/生活用品.svg' %}" class="card-img-top" style="height: 45px;width: 45px">
+        <p class="card-text text-dark h6">生活用品</p>
     </a>
 
-    <a class="navbar-brand goods_category" href="*">
-        <img src="{% static 'img/icons/image.svg' %}" class="card-img-top">
-        <p class="card-text text-dark h6">输入四个</p>
+    <a class="navbar-brand goods_category col-3" href="http://{{request.get_host}}/goods/product_list/?goods_category=4" id="4">
+        <img src="{% static 'img/icons/化妆品.svg' %}" class="card-img-top" style="height: 45px;width: 45px">
+        <p class="card-text text-dark h6">化妆品</p>
     </a>
-
-    <a class="navbar-brand goods_category" href="*">
-        <img src="{% static 'img/icons/image.svg' %}" class="card-img-top">
-        <p class="card-text text-dark h6">输入四个</p>
+    <a class="navbar-brand goods_category col-3" href="http://{{request.get_host}}/goods/product_list/?goods_category=5" id="5">
+        <img src="{% static 'img/icons/手机卡.svg' %}" class="card-img-top" style="height: 45px;width: 45px">
+        <p class="card-text text-dark h6">手机卡</p>
     </a>
+    <a class="navbar-brand goods_category col-3" id="6" href="http://{{request.get_host}}/goods/product_list/?goods_category=6" style="display: none" >
+        <img src="{% static 'img/icons/image.svg' %}" class="card-img-top">
+        <p class="card-text text-dark h6">外卖</p>
+    </a>
+    <form style="display: none" id="submit"></form>
 </div>
 
-<!--JS动态，点击搜索图片，实时搜索-->
-<script>
-    //点击搜索图片，跳转商品页并显示搜索商品
-    $("#search_img").click(function () {
-            window.location.href="http://{{request.get_host}}/cart/cart_search/?search_input="+$("#search_input").val()
-        })
-    // 实时搜索功能
-    $(function (){
-        // 键盘输入异步搜索，调用搜索函数
-        $("#search_input").keyup(function () {
-            $("#search_list").empty();
-            $.ajax({
-                url: "/cart/cart_search/",
-                data: {
-                    'search_input':$("#search_input").val(),
-                    "csrfmiddlewaretoken": $("[name = 'csrfmiddlewaretoken']").val(),
-                },
-                type: "POST",
-                async: true,
-                success:function (goods_name_list) {
-                    // console.log(goods_name_list)
-
-                    $.each(goods_name_list,function (key,goods_name) {
-                        if ($("#search_input").val() == ''){
-                            $("#search_list").empty();
-                        }else {
-                            addlist(goods_name);
-                        }
-
-                    });
-                    }
-            })
-        })
-
-        // 搜索栏添加列表
-        function addlist(goods_name) {
-            $('<a/>',{
-                text:goods_name,
-                class:'list-group-item list-group-item-action list-group-item-secondary col-11',
-                style:"z-index: 999;opacity:0.95"
-            }).appendTo($('#search_list'))
-        }
-    })
-</script>
-
+<!--限时特惠-->
+<div class="text-danger ml-2 mt-2 mr-2 pt-1 border-top mb-0 h5">限时特惠:
+    <div class="float-right">
+        <span class="badge badge-danger" id="hours_show"></span><span class="ml-1">:</span>
+        <span class="badge badge-danger" id="minutes_show"></span><span class="ml-1">:</span>
+        <span class="badge badge-danger" id="seconds_show"></span>
+    </div>
+</div>
+<div class="bg-light mt-1 ml-2 mr-2 mb-5 p-3 shadow-sm rounded border-bottom">
+    {% for goods in goods_dic %}
+    <div class="media mt-1 border-bottom flash_sales" id="{{goods.id}}">
+        <img class="align-self-center  mr-2" src=" {% static goods.goods_image %}" style="width: 90px;height: 90px;">
+        <div class="media-body"  id="list-item-{{goods.goods_category}}">
+            <h5 class=" mt-0 mb-0 search_name">{{goods.goods_name}}</h5>
+            <small class="text-black-50" style="text-decoration: line-through" >原价:￥{{goods.goods_sell_price}}</small>
+            <div class="h6 mb-0 text-danger ">
+                <small >特惠价:</small>
+                <span id="goods_preferential_price_{{goods.id}}">{{goods.goods_preferential_price}}</span>
+                <div class="float-right mr-2 mb-0">
+                    <img  class="float-right ml-1" id="add_{{goods.id}}" src="{% static 'img/icons/cart.svg' %}" width="24" height="24">
+                    <h5 class="float-right ml-1" id="text_{{goods.id}}" style="visibility: hidden">0</h5>
+                    <img  class="float-right ml-1 " id="subtract_{{goods.id}}" src="{% static 'img/icons/cart-dash.svg' %}" width="24" height="24" style="visibility: hidden">
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}
 
 

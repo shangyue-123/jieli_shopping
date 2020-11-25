@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <title>注册</title>
-
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <script src="{% static 'jquery/jquery-3.5.1.min.js' %}"></script>
     <link rel="stylesheet" href="{% static 'bootstrapt/css/bootstrap.min.css' %}">
@@ -15,10 +14,13 @@
     <!--头部导航栏-->
 
     <!--标题-->
-    <h2 class="text-center" >注册</h2>
+    <div class=" bg-light border-bottom pt-2 pb-2 ">
+        <img src="{% static 'img/icons/chevron-left.svg' %}" class="float-left ml-2 " id="previous_page" style="margin-top: 2px">
+        <div class="h6 text-center mb-0 mt-0" >注册</div>
+    </div>
 
     <!--注册表单-->
-    <form class="form-group  container" method="post">
+    <form class="form-group container mt-4" method="post">
         {% csrf_token %}
 
         <span class="form-check text-danger" id="user_name_check_span"></span>
@@ -73,6 +75,16 @@
             </div>
         </div>
 
+        <span class="form-check text-danger" id="user_email_verification_span"></span>
+         <!--输入邮箱验证码-->
+        <div class="input-group justify-content-center" >
+            <div class="input-group-prepend col-md-4 mb-4">
+                <img class="input-group-text" src="{% static 'img/icons/envelope-open.svg' %}">
+                <input type="text" class="form-control col-6 " id="user_email_verification" name="user_email_verification" placeholder="请输入验证码">
+                <button type="button" class="btn btn-primary btn-sm col-4 float-right ml-2" id="get_verification">获取验证码</button>
+            </div>
+        </div>
+
         <span class="form-check text-danger" id="user_number_check_span"></span>
             <!--输入手机号-->
         <div class="input-group justify-content-center">
@@ -85,11 +97,7 @@
             <!--提交按钮-->
         <div class="input-group justify-content-center">
             <button type="submit" class="btn btn-primary col-md-4  mb-2" id="submit" name="btn_submit" >注册并登录</button>
-
         </div>
-
-
-
     </form>
 </body>
 </html>

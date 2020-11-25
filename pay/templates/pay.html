@@ -9,49 +9,51 @@
     <link rel="stylesheet" href="{% static 'bootstrapt/css/bootstrap.min.css' %}">
     <script src="{% static 'bootstrapt/js/bootstrap.bundle.min.js' %}"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'css/pay.css' %}">
+    <script src="{% static 'js/pay.js' %}"></script>
     {% block head %}{% endblock %}
 </head>
 <body>
 
-<!--显示收件人信息-->
-<div class="jumbotron d-flex  container bg-light pb-0 pt-1 mt-2 mb-2">
-    <div class=" ml-0 col-10">
-        {% for consignee in consignee_dic %}
-        <div class=" font-weight-bold ">地址：{{consignee.consignee_address}}</div>
-        <input id="get_consignee_id" value="{{consignee.id}}" style="display: none">
-        <div class="small font-weight-bold">收件人：{{consignee.consignee_name}}<br>联系电话：{{consignee.consignee_number}}</div>
-        {% endfor %}
+<div class="card mb-2 mt-2">
+    <!--显示收件人信息-->
+    <div class="card-header bg-light">
+        <div class="container ">
+            <div class="row">
+                <span class=" font-weight-bold " id="consignee_address">地址：{{consignee_address}}</span>
+            </div>
+            <div class="row">
+                <span class="col-11 pl-0 pr-0 small" id="consignee_name" >收件人：{{consignee_name}}</span>
+                <img class="pl-0 pr-0 float-right" src="../../static/img/icons/chevron-right.svg" id="address_change" width="24" height="24">
+            </div>
+            <div class="row">
+                <span class="small" id="consignee_number">联系电话：{{consignee_number}}</span>
+            </div>
+            <input style="display: none" id="order_id_get" value="{{order_id}}">
+        </div>
     </div>
-    <img class="float-right align-self-center col-2" src="../../static/img/icons/chevron-right.svg" >
-
-
-
-</div>
-
-<!--显示商品信息-->
-<div class="jumbotron d-flex flex-column-reverse container bg-light mb-2 ">
-    {% for search in goods_message_list %}
-    <div class=" media  pt-2 container pay_list border-bottom " id="{{search.goods_id}}">
-            <img class="mr-0" src=" {{search.goods_image}}" id="goods_image_{{search.goods_id}}" style="width: 90px;height: 90px;">
-            <div class="media-body"  id="list_item_{{search.goods_category}}" style="border-radius: 5px">
-                <h5 class=" mt-1 mb-0 search_name" id="goods_name_{{search.goods_id}}">{{search.goods_name}}</h5>
-                <button style="visibility:hidden" >选择</button>
-                <div class="mb-0 h5 text-danger mt-4">
-                    <h5 class="float-left ">￥<h5 class="float-left" id="goods_sell_price_{{search.goods_id}}" >{{search.goods_sell_price}}</h5></h5>
-                    <div class="float-right mr-2 mb-0 ">
-                        <img  class="float-right ml-2 mt-1 cart_add"  src="../../static/img/icons/plus.svg" width="24" height="24">
-                        <h5 class="float-right mt-1 text-black-50 ml-2 text-center" id="cart_goods_quantity_{{search.goods_id}}" style="width: 25px;height: 25px">{{search.cart_goods_quantity}}</h5>
-                        <img  class="float-right ml-2 mt-1 cart_dash"  src="../../static/img/icons/dash.svg" width="24" height="24">
+    <!--显示商品信息-->
+    <div class="card-body pl-1 pr-1">
+        {% for search in goods_message_list %}
+        <div class=" media container pay_list border-bottom " id="{{search.goods_id}}">
+                <img class=" pl-0 pb-1 pt-1" src=" {{search.goods_image}}" id="goods_image_{{search.goods_id}}" style="width: 90px;height: 90px;">
+                <div class="media-body ml-2"  id="list_item_{{search.goods_category}}" style="border-radius: 5px">
+                    <h5 class=" mt-1 mb-0 search_name" id="goods_name_{{search.goods_id}}">{{search.goods_name}}</h5>
+<!--                    <button style="visibility:hidden" >选择</button>-->
+                    <div class="mb-0 h5 text-danger mt-4">
+                        <h5 class="float-left ">￥<h5 class="float-left" id="goods_sell_price_{{search.goods_id}}" >{{search.goods_sell_price}}</h5></h5>
+                        <div class="float-right mr-2 mb-0 ">
+                            <img  class="float-right ml-2 mt-1 cart_add"  src="../../static/img/icons/plus.svg" width="24" height="24">
+                            <h5 class="float-right mt-1 text-black-50 ml-2 text-center" id="cart_goods_quantity_{{search.goods_id}}" style="width: 25px;height: 25px">{{search.cart_goods_quantity}}</h5>
+                            <img  class="float-right ml-2 mt-1 cart_dash"  src="../../static/img/icons/dash.svg" width="24" height="24">
+                        </div>
                     </div>
                 </div>
-            </div>
+        </div>
+        {%endfor%}
     </div>
-    {%endfor%}
-</div>
-
-<!--显示支付方式-->
-<div class="jumbotron  container bg-light pb-0 pt-1 " style="margin-bottom: 18%">
-    <div class="list-group   form-group row h6 ">
+    <!--显示支付方式-->
+    <div class="card-footer bg-light">
+        <div class="list-group form-group row h6 ">
         <div class="form-check pt-2 pb-2 border-bottom">
             <input type="radio" class="form-check-input" name="select" id="select_pay0" value="0" checked>
             <label class="form-check-label" for="select_pay0">现金支付</label>
@@ -69,9 +71,55 @@
             </label>
         </div>
     </div>
-
+    </div>
 </div>
 
+<!--显示可用优惠-->
+<div class="card">
+    <div class="card-header bg-light">
+        <span>商品金额</span>
+        <span class="float-right mr-4" id="sum_price_discounts"></span>
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item border-bottom-0 ">
+            <span>运费</span><span class="float-right mr-4" id="carriage">￥0.00</span>
+        </li>
+        <li class="list-group-item border-bottom-0" >
+            <span>优惠券</span>
+            <div class="float-right">
+                <span class="mr-1 text-black-50 discounts_price">无可用</span>
+                <img class="pb-1" src="../../static/img/icons/chevron-right.svg">
+            </div>
+        </li>
+        <li class="list-group-item border-bottom-0" >
+            <span>红包</span>
+            <div class="float-right">
+                <span class="mr-1 text-black-50 discounts_price">无可用</span>
+                <img class="pb-1" src="../../static/img/icons/chevron-right.svg">
+            </div>
+        </li>
+        <li class="list-group-item border-bottom-0 " id="integral_use">
+            <span class="">积分</span>
+            <div class="float-right">
+                <span class="mr-1 discounts_price" id="show_amount_integral">去选择</span>
+                <img class="pb-1" src="../../static/img/icons/chevron-right.svg">
+            </div>
+        </li>
+        <li class="list-group-item border-bottom-0" >
+            <span>礼品卡</span>
+            <div class="float-right">
+                <span class="mr-1 text-black-50 discounts_price">无可用</span>
+                <img class="pb-1" src="../../static/img/icons/chevron-right.svg">
+            </div>
+        </li>
+    </ul>
+    <div class="card-footer bg-light ">
+        <span class="float-right mr-4" id="discounts_sum_price">￥111</span><span class="float-right mr-1">合计:</span>
+    </div>
+
+
+</div>
+<div class="pb-3 mb-5"></div>
 <!--提交订单-->
 <nav id="bottom" class="navbar col-12 fixed-bottom shadow-sm bg-light rounded text-center border border-primary" >
     <div class="h6 form-check form-check-inline col-6 mb-0" >
@@ -83,100 +131,41 @@
     </form>
 </nav>
 
+
+<!--模态框-->
+<!--积分弹出模态框-->
+<div class="modal fade " id="integral_modal"  tabindex="-1" aria-labelledby="integral_title" role="dialog" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content bg-white">
+            <div class="modal-header">
+            <h5 class="modal-title" id="integral_title">积分</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true" id="close">&times;</span>
+            </button>
+        </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <span>账户积分数:</span><span id="integral_number">{{integral_number}}</span>
+                    <span class="float-right text-danger mr-3" id="save_amount">0</span>
+                    <span class="float-right text-danger">预计可节省:￥</span>
+                </div>
+            <div class="input-group">
+                <input type="number" class="form-control" placeholder="请输入要使用的积分数" id="integral_input">
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-outline-secondary" id="integral_all">全部使用</button>
+                </div>
+            </div>
+        </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close_button">关闭窗口</button>
+            <button type="button" class="btn btn-primary" id="sure_use_integral">确定使用</button>
+        </div>
+        </div>
+    </div>
+</div>
+
 <script>
 
-    $(function () {
-        // 页面加载计算总价
-        sum_price()
-        // 点击加号增加数量，计算总价
-        $('.cart_add').click(function () {
-            var cart_goods_quantity = Number($(this).next().text())
-            console.log(cart_goods_quantity)
-            $(this).next().text(cart_goods_quantity+1)
-            sum_price()
-        })
-        //点击减号减少数量，计算总价,数量为0时，删除元素
-        $('.cart_dash').click(function () {
-            var cart_goods_quantity = Number($(this).prev().text())
-            console.log(cart_goods_quantity)
-            if (cart_goods_quantity == 1){
-                $(this).parents('.pay_list').remove()
-            }else {
-                $(this).prev().text(cart_goods_quantity-1)
-            }
-            sum_price()
-
-
-        })
-        //点击提交订单
-        $("#order_submit").click(function () {
-            var goods_json_get = {};
-            var i = 0;
-            //向goods_id_list中添加商品id
-            $(".pay_list").each(function () {
-                goods_json_get[i] = {};
-
-                var goods_id = $(this).attr("id");
-                var goods_image = $("#goods_image_"+goods_id).attr("src")
-                var goods_name = $("#goods_name_"+goods_id).text()
-                var goods_sell_price = $("#goods_sell_price_"+goods_id).text()
-                var cart_goods_quantity = $("#cart_goods_quantity_"+goods_id).text()
-
-                goods_json_get[i]['goods_id'] = goods_id;
-                goods_json_get[i]['goods_image'] = goods_image;
-                goods_json_get[i]['goods_name'] = goods_name;
-                goods_json_get[i]['goods_sell_price'] = goods_sell_price;
-                goods_json_get[i]['cart_goods_quantity'] = cart_goods_quantity;
-
-                i+=1
-            });
-
-            var goods_json = JSON.stringify(goods_json_get)
-            console.log(goods_json)
-            var payment_method_get = $("input[type='radio']:checked").val();
-            var payment_amount_get = $("#sum_price").text()
-            var consignee_id_get = $("#get_consignee_id").val()
-            var url = "http://" + window.location.host + "/pay/submit_order/"
-
-            var form = $("#submit");
-            form.attr('action',url);
-            form.attr('method','post');
-
-            var goods_json_input = $('<input type="text" name="goods_json">')
-            var payment_method = $('<input type="text" name="payment_method">')
-            var payment_amount = $('<input type="text" name="payment_amount">')
-            var consignee_id = $('<input type="text" name="consignee_id">')
-
-            goods_json_input.attr('value',goods_json)
-            payment_method.attr('value',payment_method_get)
-            payment_amount.attr('value',payment_amount_get)
-            consignee_id.attr('value',consignee_id_get)
-
-            form.append(goods_json_input)
-            form.append(payment_method)
-            form.append(payment_amount)
-            form.append(consignee_id)
-            $(document.body).append(form);
-            form.submit();
-        })
-
-
-
-        // 计算总价
-        function sum_price() {
-            var sum_price = 0;
-            $(".pay_list").each(function () {
-                var goods_id = $(this).attr('id')
-                var goods_sell_price = $("#goods_sell_price_" + goods_id).text()
-                var cart_goods_quantity = $("#cart_goods_quantity_" + goods_id).text()
-                console.log(goods_id, goods_sell_price, cart_goods_quantity)
-                sum_price += goods_sell_price * cart_goods_quantity
-
-            });
-            console.log(sum_price)
-            $('#sum_price').text('￥' + sum_price)
-        }
-    });
 
 
 </script>

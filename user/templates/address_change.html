@@ -8,6 +8,7 @@
     <script src="{% static 'jquery/jquery-3.5.1.min.js' %}"></script>
     <link rel="stylesheet" href="{% static 'bootstrapt/css/bootstrap.min.css' %}">
     <script src="{% static 'bootstrapt/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/address_change.js' %}"></script>
 </head>
 <body>
     <nav class="navbar navbar-light bg-light border-bottom">
@@ -47,20 +48,6 @@
     </form>
 
 
-<script>
-    $(function () {
-        var url = "http://" + window.location.host + "/user/address/address_change/"
-        $("#form_submit").attr('action',url)
-        $(":button").click(function () {
-            $("form").submit()
 
-        })
-        $("#previous_page").click(function () {
-            window.history.back(-1);
-
-        })
-    });
-
-</script>
 </body>
 </html>

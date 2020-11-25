@@ -3,8 +3,9 @@ from goods.models import *
 
 class goods_admin(admin.ModelAdmin):
     list_display = ('goods_name','goods_category','goods_image','goods_introduction',
-                    'goods_evaluation','goods_sell_price','goods_sell_volume')
-    list_filter = ('goods_name','goods_category')
+                    'goods_evaluation','goods_sell_price','goods_sell_volume',
+                    'goods_preferential','goods_preferential_price')
+    list_filter = ('goods_preferential','goods_category')
     search_fields = ('goods_name','goods_category','goods_image','goods_introduction',
                     'goods_evaluation','goods_sell_price','goods_sell_volume')
 

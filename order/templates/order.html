@@ -6,6 +6,7 @@
 
 
 {% block head%}
+<script src="{% static 'js/order.js' %}"></script>
 {% endblock%}
 {% block body_title %}
 {% endblock%}
@@ -22,185 +23,46 @@
     </nav>
     <div class="mt-4 pt-4"></div>
     <!--订单列表-->
-    {% for order_dic in order_dic_tuple %}
-    <ul class="list-unstyled border-bottom  shadow-sm p-3  bg-white rounded" id="{{order_dic.id}}">
-        <li class=" shadow-sm  p-2 bg-light rounded">
-            <p class=" mb-0 text-danger float-left">自营</p>
-            <p class="mb-0 text-danger text-right" id="order_status_{{order_dic.id}}">{{order_dic.order_status}}</p>
-        </li>
-        {% for order in order_dic.goods_json %}
-        <li class="media mt-1 border-bottom" id="{{order.goods_id}}">
-            <img src="{{order.goods_image}}" class="align-self-center" style="width: 90px;height: 90px;">
-            <div class="media-body ml-1" >
-                <h5 class=" mt-0 mb-0 search_name">{{order.goods_name}}</h5>
-                <div class="h6 mb-0 ">
-                    <small>单价：￥</small><span id="goods_sell_price_{{order_dic.id}}_{{order.goods_id}}">{{order.goods_sell_price}}</span><br>
-                    <small>数量：</small><span id="cart_goods_quantity_{{order_dic.id}}_{{order.goods_id}}">{{order.cart_goods_quantity}}</span>
+    <div id="order_show_0">
+        <input value="{{order_dic_count}}" id="get_count" style="display: none">
+        {% for order_dic in order_dic_tuple %}
+        <ul class="list-unstyled border-bottom  shadow-sm p-3  bg-white rounded order_show" id="{{order_dic.id}}">
+            <li class=" shadow-sm  p-2 bg-light rounded">
+                <p class=" mb-0 text-danger float-left">自营</p>
+                <p class="mb-0 text-danger text-right" id="order_status_{{order_dic.id}}">{{order_dic.order_status}}</p>
+            </li>
+            {% for order in order_dic.goods_json %}
+            <li class="media mt-1 border-bottom" id="{{order.goods_id}}">
+                <img src="{{order.goods_image}}" class="align-self-center" style="width: 90px;height: 90px;">
+                <div class="media-body ml-1" >
+                    <h5 class=" mt-0 mb-0 search_name">{{order.goods_name}}</h5>
+                    <div class="h6 mb-0 ">
+                        <small>单价：￥</small><span id="goods_sell_price_{{order_dic.id}}_{{order.goods_id}}">{{order.goods_sell_price}}</span><br>
+                        <small>数量：</small><span id="cart_goods_quantity_{{order_dic.id}}_{{order.goods_id}}">{{order.cart_goods_quantity}}</span>
+                    </div>
                 </div>
-            </div>
-        </li>
+            </li>
+            {% endfor %}
+            <li class=" border-top " style="height: 100%">
+                <div class="float-right">
+                    <p class="mb-0 ">付款金额：</p>
+                    <p class="mb-0 text-danger" >￥<span  id="total_{{order_dic.id}}"></span></p>
+                </div>
+                <div id="card_foot_{{order_dic.id}}">
+                    <a class="btn btn-primary text-white mt-1 col-4 button_change_left " id="value_change_{{order_dic.id}}">确认收货</a>
+                    <a class="btn btn-primary text-white mt-1 col-4 button_change_right" id="value_change_right_{{order_dic.id}}">取消订单</a>
+                    <input class="order_status" value="{{order_dic.order_status}}" id="get_order_status_{{order_dic.id}}" style="display:none ">
+                </div>
+    <!--            <input type="button" class="btn btn-secondary mt-1 col-4 " id="value_change_{{order_dic.id}}"  value="取消订单">-->
+    <!--            <input type="button" class="btn btn-secondary mt-1 col-4 bg-danger " id="pay_{{order_dic.id}}"  value="支付" style="visibility: hidden">-->
+
+            </li>
+        </ul>
         {% endfor %}
-        <li class=" border-top " style="height: 100%">
-            <div class="float-right">
-                <p class="mb-0 ">付款金额：</p>
-                <p class="mb-0 " >￥<span id="total_{{order_dic.id}}"></span></p>
-            </div>
-            <input type="button" class="btn btn-secondary mt-1 col-4 " id="value_change_{{order_dic.id}}"  value="取消订单">
-            <input type="button" class="btn btn-secondary mt-1 col-4 bg-danger " id="pay_{{order_dic.id}}"  value="支付" style="visibility: hidden">
-
-        </li>
-    </ul>
-    {% endfor %}
-
-
+    </div>
+    <div id="order_show_1"></div>
 
     <div class="mb-5 pb-1"></div>
 
-<script>
-    $(function () {
-        $("#previous_page").click(function () {
-            window.history.back(-1);
 
-        })
-        //遍历所有ul显示订单状态
-        $("ul").each(function () {
-            var order_id = this.id;
-            order_status(order_id)
-            button_change(order_id)
-            show_price(order_id)
-
-
-
-        });
-        //根据order_status显示订单状态
-        function order_status(order_id) {
-                var order_status = Number($('#order_status_'+order_id).text());
-                switch (order_status) {
-                    case 0:
-                        $('#pay_'+order_id).css('visibility','visible');
-                        $('#order_status_'+order_id).text('待支付');
-                        break;
-                    case 1:
-                        $('#order_status_'+order_id).text('待发货');
-                        break;
-                    case 2:
-                        $('#order_status_'+order_id).text('待收货');
-                        break;
-                    case 3:
-                        $('#order_status_'+order_id).text('已收货');
-                        break;
-                    case 4:
-                        $('#order_status_'+order_id).text('换货');
-                        break;
-                    case 5:
-                        $('#order_status_'+order_id).text('退货');
-                        break;
-                    case 6:
-                        $('#order_status_'+order_id).text('订单取消中');
-                        break;
-                    case 7:
-                        $('#order_status_'+order_id).text('订单已取消');
-                        break;
-                };
-            };
-        //计算总价并显示
-        function show_price(order_id) {
-            var li = $("ul[id='"+order_id+"'] li").slice(1,-1)
-            var total_price  = 0
-            $(li).each(function () {
-                var goods_id = this.id;
-                console.log(order_id)
-                var goods_sell_price = $("#goods_sell_price_"+order_id+'_'+goods_id).text();
-                var cart_goods_quantity = $("#cart_goods_quantity_"+order_id+'_'+goods_id).text();
-                var price = goods_sell_price * cart_goods_quantity
-                total_price += price
-            });
-            $('#total_'+order_id).text(total_price)
-        }
-        
-        //根据订单状态改变按钮功能
-        function button_change(order_id) {
-            var order_status = Number($('#order_status_'+order_id).text());
-            switch (order_status) {
-                    case 0:
-                    case 1:
-                    case 2:
-                        $('#value_change_'+order_id).val('取消订单');
-                        $('#value_change_'+order_id).click(order_status_change_6(order_id));
-                        break;
-                    case 7:
-                    case 3:
-                        $('#value_change_'+order_id).val('删除订单');
-                        $('#value_change_'+order_id).click(order_status_change_8(order_id))
-                        break;
-                    case 4:
-                        $('#value_change_'+order_id).val('取消换货');
-                        $('#value_change_'+order_id).click(order_status_change_3(order_id))
-                        break;
-                    case 5:
-                        $('#value_change_'+order_id).val('取消退货');
-                        $('#value_change_'+order_id).click(order_status_change_3(order_id))
-                        break;
-                    case 6:
-                        $('#value_change_'+order_id).val('不可更改').css('visibility','hidden');
-                        break;
-                };
-            };
-        //点击按钮，上传订单状态，在数据库中更改订单状态，成功调用警示框
-
-        //更改为取消订单状态
-        function order_status_change_6(order_id) {
-            $.ajax({
-                url:"order_status_change/",
-                data:{"order_id":order_id,
-                    "order_status":"6",
-                    "csrfmiddlewaretoken": $("[name = 'csrfmiddlewaretoken']").val(),
-                },
-                type:"POST",
-                success:function () {
-                    window.location.reload()
-                    alert('订单已取消')
-                }
-            });
-
-        }
-        //更改为删除订单状态
-        function order_status_change_8(order_id) {
-            $.ajax({
-                url:"order_status_change/",
-                data:{"order_id":order_id,
-                    "order_status":"8",
-                    "csrfmiddlewaretoken": $("[name = 'csrfmiddlewaretoken']").val(),
-                },
-                type:"POST",
-                success:function () {
-                    window.location.reload()
-                    alert('订单已删除')
-                }
-            });
-
-        }
-        //更改为已收货状态
-        function order_status_change_3(order_id) {
-            $.ajax({
-                url:"order_status_change/",
-                data:{"order_id":order_id,
-                    "order_status":"3",
-                    "csrfmiddlewaretoken": $("[name = 'csrfmiddlewaretoken']").val(),
-                },
-                type:"POST",
-                success:function () {
-                    window.location.reload()
-                    alert('取消成功')
-                }
-            });
-
-        }
-
-
-
-
-    })
-
-</script>
 {% endblock %}

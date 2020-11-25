@@ -13,239 +13,77 @@
 <!--过滤头部标题-->
 {% block body_title%}{% endblock %}
 {% block body_head %}
-<div id="head" class="jumbotron bg-light fixed-top">
 {% endblock%}
+{% block search%}
+    <!--搜索框-->
+    <div class="input-group container justify-content-center fixed-top"  >
+        <input type="text" id="search_input" class="form-control col-md-4" placeholder="请输入商品名称" autocomplete="off">
+        <img class="input-group-text" id="search_img" src="{% static 'img/icons/search.svg' %}">
+
+    </div>
+    <div class="list-group container justify-content-center ml-3  " id="search_list" style="width: 85%;position: absolute">
+    </div>
+{% endblock %}
 <!--菜单栏-->
 {% block central %}
 
 <!--设置滚动监听 信息展示-->
-<body data-spy="scroll" data-target="#list" data-offset="130" style="position: relative">
-
-    <div class="row mr-0"   >
+<body data-spy="scroll" data-target="#list" data-offset="60" style="position: relative">
+{% csrf_token %}
+    <div class="row mr-0 mt-4 pt-3 "   >
         <!--左侧导航栏-->
-        <div class="  col-4 flex-column pr-0  h-100 bg-light " id="list" >
-            <nav class="list-group nav nav-pills flex-column  bg-light position-fixed "  style="padding-bottom: 100%; ">
-                <a class=" list-group-item-action nav-link  text-center mt-5" href="#list-item-0" >休闲零食</a>
-                <a class=" list-group-item-action nav-link  text-center" href="#list-item-1" >火锅速食</a>
-                <a class=" list-group-item-action nav-link  text-center" href="#list-item-2">厨房调料</a>
-                <a class=" list-group-item-action nav-link  text-center" href="#list-item-3" >生活用品</a>
-                <a class=" list-group-item-action nav-link  text-center" href="#list-item-4" >厨房用品</a>
-                <a class=" list-group-item-action nav-link  text-center" href="#list-item-5" >卫浴用品</a>
+        <div class="  col-4 flex-column pr-0 " id="list" >
+            <nav class="list-group nav nav-pills flex-column   position-fixed "  style="padding-bottom: 100%;">
+                <div class=" list-group-item-action nav-link  text-center bg-primary text-white goods_category_list" id="0"  >食品</div>
+                <div class=" list-group-item-action nav-link  text-center goods_category_list" id="1"  >饮料</div>
+                <div class=" list-group-item-action nav-link  text-center goods_category_list" id="2"  >调料</div>
+                <div class=" list-group-item-action nav-link  text-center goods_category_list" id="3"  >生活用品</div>
+                <div class=" list-group-item-action nav-link  text-center goods_category_list" id="4"  >化妆品</div>
+                <div class=" list-group-item-action nav-link  text-center goods_category_list" id="5"  >手机卡</div>
+                <div class=" list-group-item-action nav-link  text-center goods_category_list" id="6"   style="visibility: hidden">外卖</div>
+                <div class=" list-group-item-action nav-link  text-center goods_category_list" id="7"   style="visibility: hidden"></div>
+                <div class=" list-group-item-action nav-link  text-center goods_category_list" id="8"   style="visibility: hidden"></div>
+                <div class=" list-group-item-action nav-link  text-center goods_category_list" id="9"   style="visibility: hidden"></div>
+                <div class=" list-group-item-action nav-link  text-center goods_category_list" id="10"   style="visibility: hidden"></div>
+                <div class=" list-group-item-action nav-link  text-center goods_category_list" id="11"   style="visibility: hidden"></div>
             </nav>
         </div>
         <!--右侧商品信息栏-->
-        <div data-spy="scroll" data-target="#list" data-offset="0" class="col-8  float-left h-100  pl-0  mt-5 pt-3 pr-0 mb-5" >
-            {% csrf_token %}
-            {% for goods in goods_dic %}
-                {% if goods.goods_category == 0 %}
-                    <div class="h-25 w-100  media" >
-                <img class="align-self-center  mr-0" src=" {% static goods.goods_image %}" style="width: 90px;height: 90px;">
-                <div class="media-body"  id="list-item-{{goods.goods_category}}">
-                    <h5 class=" mt-0 mb-0 search_name">{{goods.goods_name}}</h5>
-                    <small class="mt-0">销量：{{goods.goods_sell_volume}}</small>
-                    <div class="h6 mb-0 text-danger ">
-                        <small >￥</small>{{goods.goods_sell_price}}
-                        <div class="float-right mr-2 mb-0">
-                            <img  class="float-right ml-1" id="add_{{goods.id}}" src="{% static 'img/icons/cart.svg' %}" width="24" height="24">
-                            <h5 class="float-right ml-1" id="text_{{goods.id}}" style="visibility: hidden">0</h5>
-                            <img  class="float-right ml-1 " id="subtract_{{goods.id}}" src="{% static 'img/icons/cart-dash.svg' %}" width="24" height="24" style="visibility: hidden">
-                        </div>
-                    </div>
-                </div>
-            </div>
-                {% endif %}
-            {% endfor %}
-            {% for goods in goods_dic %}
-                {% if goods.goods_category == 1 %}
-                    <div class="h-25 w-100  media" >
-                <img class="align-self-center  mr-0" src=" {% static goods.goods_image %}" style="width: 90px;height: 90px;">
-                <div class="media-body"  id="list-item-{{goods.goods_category}}">
-                    <h5 class=" mt-0 mb-0 search_name">{{goods.goods_name}}</h5>
-                    <small class="mt-0">销量：{{goods.goods_sell_volume}}</small>
-                    <div class="h6 mb-0 text-danger ">
-                        <small >￥</small>{{goods.goods_sell_price}}
-                        <div class="float-right mr-2 mb-0">
-                            <img  class="float-right ml-1" id="add_{{goods.id}}" src="{% static 'img/icons/cart.svg' %}" width="24" height="24">
-                            <h5 class="float-right ml-1" id="text_{{goods.id}}" style="visibility: hidden">0</h5>
-                            <img  class="float-right ml-1 " id="subtract_{{goods.id}}" src="{% static 'img/icons/cart-dash.svg' %}" width="24" height="24" style="visibility: hidden">
-                        </div>
-                    </div>
-                </div>
-            </div>
-                {% endif %}
-            {% endfor %}
-            {% for goods in goods_dic %}
-                {% if goods.goods_category == 2 %}
-                    <div class="h-25 w-100  media" >
-                <img class="align-self-center  mr-0" src=" {% static goods.goods_image %}" style="width: 90px;height: 90px;">
-                <div class="media-body"  id="list-item-{{goods.goods_category}}">
-                    <h5 class=" mt-0 mb-0 search_name">{{goods.goods_name}}</h5>
-                    <small class="mt-0">销量：{{goods.goods_sell_volume}}</small>
-                    <div class="h6 mb-0 text-danger ">
-                        <small >￥</small>{{goods.goods_sell_price}}
-                        <div class="float-right mr-2 mb-0">
-                            <img  class="float-right ml-1" id="add_{{goods.id}}" src="{% static 'img/icons/cart.svg' %}" width="24" height="24">
-                            <h5 class="float-right ml-1" id="text_{{goods.id}}" style="visibility: hidden">0</h5>
-                            <img  class="float-right ml-1 " id="subtract_{{goods.id}}" src="{% static 'img/icons/cart-dash.svg' %}" width="24" height="24" style="visibility: hidden">
-                        </div>
-                    </div>
-                </div>
-            </div>
-                {% endif %}
-            {% endfor %}
-            {% for goods in goods_dic %}
-                {% if goods.goods_category == 3 %}
-                    <div class="h-25 w-100  media" >
-                <img class="align-self-center  mr-0" src=" {% static goods.goods_image %}" style="width: 90px;height: 90px;">
-                <div class="media-body"  id="list-item-{{goods.goods_category}}">
-                    <h5 class=" mt-0 mb-0 search_name">{{goods.goods_name}}</h5>
-                    <small class="mt-0">销量：{{goods.goods_sell_volume}}</small>
-                    <div class="h6 mb-0 text-danger ">
-                        <small >￥</small>{{goods.goods_sell_price}}
-                        <div class="float-right mr-2 mb-0">
-                            <img  class="float-right ml-1" id="add_{{goods.id}}" src="{% static 'img/icons/cart.svg' %}" width="24" height="24">
-                            <h5 class="float-right ml-1" id="text_{{goods.id}}" style="visibility: hidden">0</h5>
-                            <img  class="float-right ml-1 " id="subtract_{{goods.id}}" src="{% static 'img/icons/cart-dash.svg' %}" width="24" height="24" style="visibility: hidden">
-                        </div>
-                    </div>
-                </div>
-            </div>
-                {% endif %}
-            {% endfor %}
-            {% for goods in goods_dic %}
-                {% if goods.goods_category == 4 %}
-            <div class="h-25 w-100  media" >
-                <img class="align-self-center  mr-0" src=" {% static goods.goods_image %}" style="width: 90px;height: 90px;">
-                <div class="media-body"  id="list-item-{{goods.goods_category}}">
-                    <h5 class=" mt-0 mb-0 search_name">{{goods.goods_name}}</h5>
-                    <small class="mt-0">销量：{{goods.goods_sell_volume}}</small>
-                    <div class="h6 mb-0 text-danger ">
-                        <small >￥</small>{{goods.goods_sell_price}}
-                        <div class="float-right mr-2 mb-0">
-                            <img  class="float-right ml-1" id="add_{{goods.id}}" src="{% static 'img/icons/cart.svg' %}" width="24" height="24">
-                            <h5 class="float-right ml-1" id="text_{{goods.id}}" style="visibility: hidden">0</h5>
-                            <img  class="float-right ml-1 " id="subtract_{{goods.id}}" src="{% static 'img/icons/cart-dash.svg' %}" width="24" height="24" style="visibility: hidden">
-                        </div>
-                    </div>
-                </div>
-            </div>
-                {% endif %}
-            {% endfor %}
-            {% for goods in goods_dic %}
-                {% if goods.goods_category == 5 %}
-                    <div class="h-25 w-100  media" >
-                <img class="align-self-center  mr-0" src=" {% static goods.goods_image %}" style="width: 90px;height: 90px;">
-                <div class="media-body "  id="list-item-{{goods.goods_category}}">
-                    <h5 class=" mt-0 mb-0 search_name">{{goods.goods_name}}</h5>
-                    <small class="mt-0">销量：{{goods.goods_sell_volume}}</small>
-                    <div class="h6 mb-0 text-danger ">
-                        <small >￥</small>{{goods.goods_sell_price}}
-                        <div class="float-right mr-2 mb-0">
-                            <img  class="float-right ml-1" id="add_{{goods.id}}" src="{% static 'img/icons/cart.svg' %}" width="24" height="24">
-                            <h5 class="float-right ml-1" id="text_{{goods.id}}" style="visibility: hidden">0</h5>
-                            <img  class="float-right ml-1" id="subtract_{{goods.id}}" src="{% static 'img/icons/cart-dash.svg' %}" width="24" height="24" style="visibility: hidden">
-                        </div>
-                    </div>
-                </div>
-            </div>
-                {% endif %}
-            {% endfor %}
+        <div data-spy="scroll" data-target="#list" data-offset="0" id="goods_show" class="col-8  float-left h-100  pl-0 pr-0 mb-5 " >
 
-
+            <div id="goods_information">
+                <div id="goods_show_0">
+                    <input value="{{goods_count}}" id="get_count" style="display: none">
+                    <input value="{{goods_category}}" id="get_goods_category" style="display: none">
+                    {% for goods in goods_dic %}
+                        <div class="h-25 w-100  media border-bottom  pt-1 pb-1" >
+                    <img class="align-self-center  mr-1 ml-1" src=" {% static goods.goods_image %}" style="width: 90px;height: 90px;">
+                    <div class="media-body"  id="list-item-{{goods.goods_category}}">
+                        <h5 class=" mt-0 mb-0 search_name">{{goods.goods_name}}</h5>
+                        <small class="mt-0">销量：{{goods.goods_sell_volume}}</small><br>
+                        <div class="mb-0 text-danger ">
+                            <span class="h6 text-danger float-left">￥</span><span class="h6 text-danger float-left" id="sell_price_{{goods.id}}">{{goods.goods_sell_price}}</span>
+                            <div class="mr-2 mb-0 ">
+                                <input class="goods_preferential_search" value="{{goods.goods_preferential}}" id="{{goods.id}}" style="display: none">
+                                <h6 class="goods_preferential_show">
+                                    <h6 id="goods_preferential_price_{{goods.id}}" ></h6>
+                                </h6>
+                                <img  class="float-right ml-1 add_cart" id="add_{{goods.id}}" src="{% static 'img/icons/cart.svg' %}" width="24" height="24">
+                                <h5 class="float-right ml-1" id="text_{{goods.id}}" style="visibility: hidden">0</h5>
+                                <img  class="float-right ml-1 subtract_cart" id="subtract_{{goods.id}}" src="{% static 'img/icons/cart-dash.svg' %}" width="24" height="24" style="visibility: hidden">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                    {% endfor %}
+                    <div id="get_js"></div>
+                </div>
+                <div id="goods_show_1"></div>
+            </div>
         </div>
+
     </div>
-<script>
-// 点击购物车，改变数量，上传数据库中增加购物车信息，购物车徽章改变
-$(function () {
-        {% for goods in goods_dic %}
-        // 购物车增加
-            $("#add_{{goods.id}}").click(function () {
-                // 购物车增加，改变购物车图片，显示输入框和减量框
-                $("#text_{{goods.id}}").css('visibility','visible');
-                $("#subtract_{{goods.id}}").css('visibility','visible');
-                $("#add_{{goods.id}}").attr('src',"{% static 'img/icons/cart-plus.svg' %}")
-                var number = parseInt($("#text_{{goods.id}}").text())
-                $("#text_{{goods.id}}").text(number += 1)
-                // 异步改变购物车徽章数量，并传入数据库
-                $.ajax({
-                    url:"/cart/cart_change/",
-                    data:{
-                        "goods_id":"{{goods.id}}",
-                        "csrfmiddlewaretoken": $("[name = 'csrfmiddlewaretoken']").val(),
-                        "cart_number": parseInt($("#text_{{goods.id}}").text()),
-                        "cart_type": "add"
-                        },
-                    type:"POST",
-                    async:true,
-                    success:function (cart_goods_quantity_sum_dic) {
-                        cart_goods_quantity_sum= JSON.parse(cart_goods_quantity_sum_dic).cart_goods_quantity__sum
-                        $(".badge").html(cart_goods_quantity_sum)
-                }
 
-                })
-            })
-        // 购物车减少
-            $("#subtract_{{goods.id}}").click(function () {
-                var number = parseInt($("#text_{{goods.id}}").text())
-                // 判断购物车数量，=0隐藏图片，>0异步传入数据库
-                if (number == 0) {
-                    $("#add_{{goods.id}}").attr('src',"{% static 'img/icons/cart.svg' %}");
-                    $("#text_{{goods.id}}").css('visibility','hidden');
-                    $("#subtract_{{goods.id}}").css('visibility','hidden');
-                }else if (number > 0 ){
-                    $("#text_{{goods.id}}").text(number -= 1)
-                    $.ajax({
-                    url:"/cart/cart_change/",
-                    data:{"goods_id":"{{goods.id}}",
-                          "csrfmiddlewaretoken": $("[name = 'csrfmiddlewaretoken']").val(),
-                          "cart_number": parseInt($("#text_{{goods.id}}").text()),
-                          "cart_type" : "subtract"
-                        },
-                    type:"POST",
-                    async:true,
-                    success:function (cart_goods_quantity_sum_dic) {
-                        cart_goods_quantity_sum= JSON.parse(cart_goods_quantity_sum_dic).cart_goods_quantity__sum
-                        $(".badge").html(cart_goods_quantity_sum)
-                }
-
-                })
-
-                }
-                else {
-                    alert('购买商品不能为负数')
-                }
-
-
-
-
-
-
-            })
-        {% endfor %}
-
-    })
-//点击搜索图片，跳转商品页并显示搜索商品
-$("#search_img").click(function () {
-            window.location.href="http://{{request.get_host}}/cart/cart_search/?search_input="+$("#search_input").val()
-        })
-
-// 实时搜索
- $(function () {
-        $("#search_input").keyup(function () {
-            $(".media").hide();
-            var search_input = $("#search_input").val()
-            $(".search_name").each(function () {
-                var search_name = $(this).text()
-                var judge = search_name.indexOf(search_input)
-                if (judge > -1) {
-                        $(this).parents(".media").show()
-                };
-
-            })
-        })
-    })
-
-</script>
 
 </body>
 

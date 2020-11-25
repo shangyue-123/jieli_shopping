@@ -6,19 +6,13 @@
     <title>{% block title %}{% endblock%}</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <script src="{% static 'jquery/jquery-3.5.1.min.js' %}"></script>
-    <link rel="stylesheet" href="{% static 'bootstrapt/css/bootstrap.min.css' %}">
     <script src="{% static 'bootstrapt/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/base.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'bootstrapt/css/bootstrap.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
     {% block head %}{% endblock %}
 </head>
 <body>
-<!--公用头部模板-->
-<!--{% block body_head %}-->
-<!--<div id="head" class="jumbotron bg-light ">-->
-<!--    {% csrf_token %}-->
-<!--{% endblock%}-->
-
-
     {% block body_title %}
     <!--标题-->
     <p class="h4 text-center">杰力商城</p>
@@ -34,70 +28,35 @@
     <div class="list-group container justify-content-center ml-3  " id="search_list" style="width: 85%;position: absolute">
     </div>
     {% endblock %}
-<!--</div>-->
-
 
 {% block central%}{% endblock %}
 
-
 <!--公用底部模板-->
-<!--<div class="container">-->
 {% block botton %}
     <nav id="bottom" class="navbar col-12 fixed-bottom shadow-sm bg-light rounded text-center" >
         <a class="navbar-brand navbar col-2" href="/index/" style="margin-left: 3.5%">
-            <img src="{% static 'img/icons/house-door.svg' %}" class="card-img-top" >
+            <img src="{% static 'img/icons/主页.svg' %}" class="card-img-top" width="24" height="24">
             <p class="card-text text-dark h6" >主页</p>
         </a>
 
         <a class="navbar-brand col-2" href="/goods/product_list/" >
-            <img src="{% static 'img/icons/search.svg' %}" class="card-img-top">
+            <img src="{% static 'img/icons/商品.svg' %}" class="card-img-top" width="24" height="24">
             <p class="card-text text-dark h6" >商品</p>
         </a>
 
         <a class="navbar-brand col-2 " href="/cart/cart_list/" >
-            <img src="{% static 'img/icons/cart2.svg' %}" class="card-img-top">
+            <img src="{% static 'img/icons/购物车.svg' %}" class="card-img-top" width="24" height="24">
             <span class="badge badge-pill badge-danger " id="cart_badge"></span>
             <p class="card-text text-dark h6 " >购物车</p>
         </a>
 
-        <a class="navbar-brand col-2" href="/user/personal_information/">
-            <img src="{% static 'img/icons/person.svg' %}" class="card-img-top" >
+        <a class="navbar-brand col-2" href="/user/personal_information/" >
+            <img src="{% static 'img/icons/我的.svg' %}" class="card-img-top" width="24" height="24">
             <p class="card-text text-dark h6" >我的</p>
         </a>
 
     </nav>
 {% endblock %}
-<!--JS动态表示-->
-<script>
-    // 见面刷新显示购物车商品数量
-    $(function () {
-        // 异步显示购物车徽章数量
-        $.ajax({
-            url:"/cart/cart_number/",
-            data:{
-                "csrfmiddlewaretoken": $("[name = 'csrfmiddlewaretoken']").val()
-            },
-            type:"POST",
-            async:true,
-            success:function (cart_goods_quantity_sum_dic) {
-                cart_goods_quantity_sum= JSON.parse(cart_goods_quantity_sum_dic).cart_goods_quantity__sum
-                $("#cart_badge").html(cart_goods_quantity_sum);
-            }
-        })
-        // 徽章超过99显示99+，=0隐藏
-        $("#cart_badge").bind('DOMNodeInserted',function () {
-            if ($("#cart_badge").text() > 99){
-                $("#cart_badge").text("99+");
-            }else if ($("#cart_badge").text() == 0){
-                $("#cart_badge").css('visibility','hidden');
-            }
-
-        })
-    })
-
-</script>
-
-<!--</div>-->
 
 </body>
 </html>

@@ -18,21 +18,21 @@ from django.urls import path,include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-
-
     #进入用户路由和首页
     path('',include('user.urls')),
     path('index/',include('user.urls')),
     path('user/',include('user.urls')),
     #进入商品路由
     path('goods/',include('goods.urls')),
-
     #进入购物车路由
     path('cart/',include('cart.urls')),
-
     #进入支付路由
     path('pay/',include('pay.urls')),
-
     path('order/',include('order.urls')),
+    #进入后台管理路由
+    path('order_manage/',include('order_manage.urls')),
+    #进入优惠路由
+    path('discounts/',include('discounts.urls'))
+
 
 ]
